@@ -10,7 +10,7 @@ App.prototype.init = function () {
 	this.form.el.addEventListener('click', this.setOrDelArtist.bind(this));
 	this.form.el.addEventListener('keyup', this.checkAddBtn.bind(this));
 
-	this.list.el.addEventListener('click', this.checkDelBtn.bind(this));
+	this.list.el.addEventListener('click', this.checkedLi.bind(this));
 };
 
 App.prototype.setOrDelArtist = function (e) {
@@ -29,6 +29,16 @@ App.prototype.setOrDelArtist = function (e) {
 		this.checkDelBtn();
 	}
 };
+
+App.prototype.checkedLi = function (e) {
+	var target = e.target;
+
+	if (target.tagName == 'LI') {
+		target.classList.toggle('for-del');
+	}
+	this.checkDelBtn();
+};
+
 
 App.prototype.checkAddBtn = function () {
 	var trueOrFalse = this.form.checkValue(),

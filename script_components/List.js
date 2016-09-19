@@ -1,19 +1,7 @@
 function List(el) {
 	if (!el) return;
 	this.el = el;
-	this.init();
 }
-
-List.prototype.init = function () {
-	var self = this;
-	this.el.addEventListener('click', function(e){
-		var target = e.target;
-		
-		if (target.tagName == 'LI') {
-			target.classList.toggle('for-del');
-		}
-	});
-};
 
 List.prototype.render = function (data) {
 	var elements = '';

@@ -10,24 +10,27 @@
 	
 	<div class="container">
 		<div class="row my-app">
-			<div class="new-musician col-sm-8 col-sm-offset-2">
+
+			<div class="form-musician col-sm-8 col-sm-offset-2">
 				<fieldset class="form-group col-sm-8">
 					<input type="text" placeholder="New Musician..." title="Name" required class="input" />
 				</fieldset>
 				<fieldset class="form-group col-sm-2">
-					<button class="my-btn btn btn-default" type="submit" disabled="disabled">Add Artist</button>
+					<!-- <button class="add-btn btn btn-default" type="submit">Add Artist</button> -->
+					<button class="add-btn btn btn-default" type="submit" disabled="disabled">Add Artist</button>
 				</fieldset>
 				<fieldset class="form-group col-sm-2">
-					<button class="btn-del btn btn-default" type="submit" disabled="disabled">Del Artist</button>
+					<!-- <button class="del-btn btn btn-default" type="submit">Del Artist</button> -->
+					<button class="del-btn btn btn-default" type="submit" disabled="disabled">Del Artist</button>
 				</fieldset>
 			</div>
+
 			<ul class="musicians col-sm-8 col-sm-offset-2"></div>
 		</div>
 	</div>
 
 	<script src="script_components/insertAdjacentFF.js"></script>
-	<script src="script_components/Start.js"></script>
-	<script src="script_components/AddDelMusician.js"></script>
-	<script src="script.js"></script>
+	<script src="App.js"></script>
+	<script src="script_components/List.js"></script>
 </body>
 </html>

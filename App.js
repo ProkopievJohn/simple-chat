@@ -3,10 +3,11 @@ function App() {
 }
 
 App.prototype.init = function () {
-	new Start(document.querySelector('.musicians'));
-	new AddDelMusician(document.querySelector('.my-app'));
+	new List(document.querySelector('.my-app'), data);
 };
 
 window.addEventListener('DOMContentLoaded', function(){
 	new App();
 });
+
+var data = ['John Lennon', 'Gary Moore', 'Steve Vai', 'Ronnie James Dio'];

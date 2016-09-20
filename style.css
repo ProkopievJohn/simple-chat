@@ -20,7 +20,7 @@
 	height: 100%;
 }
 
-.add-btn, .del-btn {
+.add-btn, .del-btn, .select-btn {
 	margin: 5px;
 	width: 90%;
 	line-height: 25px;

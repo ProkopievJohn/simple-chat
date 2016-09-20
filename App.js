@@ -9,16 +9,16 @@ App.prototype.init = function () {
 
 	this.list.render(data);
 
-	this.form.el.addEventListener('click', this.setOrDelArtist.bind(this));
+	this.form.el.addEventListener('click', this.clickToForm.bind(this));
 	this.form.el.addEventListener('keyup', function (e) {
-		self.setOrDelArtist(e);
+		self.clickToForm(e);
 		self.checkBtn(self.form.el.querySelector('.add-btn'), self.form.checkValue());
 	});
 
 	this.list.el.addEventListener('click', this.checkedLi.bind(this));
 };
 
-App.prototype.setOrDelArtist = function (e) {
+App.prototype.clickToForm = function (e) {
 	var target = e.target;
 
 	if (target.classList.contains('add-btn') || e.keyCode == 13) {
@@ -32,6 +32,11 @@ App.prototype.setOrDelArtist = function (e) {
 			this.list.remove(elements[i]);
 		}
 		this.checkBtn(target, this.list.checkLi());
+	} else if (target.classList.contains('select-btn')) {
+		var allLi = this.list.el.querySelectorAll('li').length,
+			allLiWithClass = this.list.el.querySelectorAll('.for-del').length;
+		allLi === allLiWithClass ? this.list.unSelectAll() : this.list.selectAll();
+		this.checkBtn(this.form.el.querySelector('.del-btn'), this.list.checkLi());
 	}
 };
 

@@ -25,3 +25,17 @@ List.prototype.getLiForDel = function () {
 List.prototype.checkLi = function () {
 	return this.el.querySelectorAll('.for-del').length !== 0 ? true : false;
 };
+
+List.prototype.selectAll = function () {
+	var allLi = this.el.querySelectorAll('li');
+	for (var i = 0; i < allLi.length; i++) {
+		allLi[i].classList.add('for-del')
+	}
+};
+
+List.prototype.unSelectAll = function () {
+	var allLi = this.el.querySelectorAll('li');
+	for (var i = 0; i < allLi.length; i++) {
+		allLi[i].classList.remove('for-del');
+	}
+};

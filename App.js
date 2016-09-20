@@ -5,10 +5,15 @@ function App() {
 }
 
 App.prototype.init = function () {
+	var self = this;
+
 	this.list.render(data);
 
 	this.form.el.addEventListener('click', this.setOrDelArtist.bind(this));
-	this.form.el.addEventListener('keyup', this.checkAddBtn.bind(this));
+	this.form.el.addEventListener('keyup', function (e) {
+		self.setOrDelArtist(e);
+		self.checkBtn(self.form.el.querySelector('.add-btn'), self.form.checkValue());
+	});
 
 	this.list.el.addEventListener('click', this.checkedLi.bind(this));
 };
@@ -16,17 +21,17 @@ App.prototype.init = function () {
 App.prototype.setOrDelArtist = function (e) {
 	var target = e.target;
 
-	if (target.classList.contains('add-btn')) {
+	if (target.classList.contains('add-btn') || e.keyCode == 13) {
 		this.list.add(this.form.getValue());
 		this.form.noValue();
-		this.checkAddBtn(target);
+		this.checkBtn(this.form.el.querySelector('.add-btn'), this.form.checkValue());
 	} else if (target.classList.contains('del-btn')) {
 		if (!confirm('Selected elements will be deleted. Are you sure?')) return;
 		var elements = this.list.getLiForDel();
 		for (var i = 0; i < elements.length; i++) {
 			this.list.remove(elements[i]);
 		}
-		this.checkDelBtn();
+		this.checkBtn(target, this.list.checkLi());
 	}
 };
 
@@ -36,20 +41,11 @@ App.prototype.checkedLi = function (e) {
 	if (target.tagName == 'LI') {
 		target.classList.toggle('for-del');
 	}
-	this.checkDelBtn();
+	this.checkBtn(this.form.el.querySelector('.del-btn'), this.list.checkLi());
 };
 
-
-App.prototype.checkAddBtn = function () {
-	var trueOrFalse = this.form.checkValue(),
-		btn = this.form.el.querySelector('.add-btn');
-	if (typeof trueOrFalse !== 'boolean') return;
-	trueOrFalse ? btn.removeAttribute('disabled') : btn.setAttribute('disabled', 'disabled');
-};
-
-App.prototype.checkDelBtn = function () {
-	var trueOrFalse = this.list.getLiForDel().length === 0 ? false : true,
-		btn = this.form.el.querySelector('.del-btn');
+App.prototype.checkBtn = function (btn, trueOrFalse) {
+	if (!btn || typeof trueOrFalse !== 'boolean') return;
 	trueOrFalse ? btn.removeAttribute('disabled') : btn.setAttribute('disabled', 'disabled');
 };
 

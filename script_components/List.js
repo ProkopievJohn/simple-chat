@@ -4,11 +4,9 @@ function List(el) {
 }
 
 List.prototype.render = function (data) {
-	var elements = '';
 	for (var i = 0; i < data.length; i++) {
-		elements += '<li>' + data[i] + '</li>';
+		this.add(data[i]);
 	}
-	this.el.insertAdjacentHTML('afterbegin', elements);
 };
 
 List.prototype.add = function (text) {
@@ -22,4 +20,8 @@ List.prototype.remove = function (element) {
 
 List.prototype.getLiForDel = function () {
 	return this.el.querySelectorAll('.for-del');
+};
+
+List.prototype.checkLi = function () {
+	return this.el.querySelectorAll('.for-del').length !== 0 ? true : false;
 };

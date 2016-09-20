@@ -12,5 +12,5 @@ Form.prototype.noValue = function () {
 };
 
 Form.prototype.checkValue = function () {
-	return this.el.querySelector('.input').value == '' ? false : true;
+	return this.el.querySelector('.input').value !== '' ? true : false;
 };

@@ -1,16 +1,36 @@
 function Form(el) {
 	if (!el) return;
 	this.el = el;
+	this.eventSendVal = 'formSendVal';
+	this.eventSelectAll = 'formSelectAll';
+	this.init();
 }
 
-Form.prototype.getValue = function () {
-	return this.el.querySelector('.input').value;
-};
+Form.prototype = {
+	init: function () {
+		this.el.addEventListener('keyup', this.checkAddBtn.bind(this));
+	},
 
-Form.prototype.noValue = function () {
-	this.el.querySelector('.input').value = '';
-};
+	checkAddBtn: function () {
+		var btn = this.el.querySelector('.add-btn');
+		this.checkValue() ? btn.removeAttribute('disabled') : btn.setAttribute('disabled', 'disabled');
+	},
 
-Form.prototype.checkValue = function () {
-	return this.el.querySelector('.input').value !== '' ? true : false;
-};
+	checkDelBtn: function (check) {
+		var btn = this.el.querySelector('.del-btn');
+		check ? btn.removeAttribute('disabled') : btn.setAttribute('disabled', 'disabled');
+	},
+
+	getValue: function () {
+		return this.el.querySelector('.input').value;
+	},
+
+	noValue: function () {
+		this.el.querySelector('.input').value = '';
+		this.checkAddBtn();
+	},
+
+	checkValue: function () {
+		return this.el.querySelector('.input').value !== '' ? true : false;
+	}
+}

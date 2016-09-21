@@ -2,12 +2,17 @@
 	list-style: none;
 }
 
+.musicians li::selection {
+	background-color: transparent;
+}
+
 .musicians li {
 	padding: 15px;
 	background-color: #ccc;
 	border-bottom: 1px solid #eee;
 	cursor: pointer;
 }
+
 
 .form-group {
 	height: 50px;

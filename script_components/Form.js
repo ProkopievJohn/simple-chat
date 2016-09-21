@@ -3,6 +3,7 @@ function Form(el) {
 	this.el = el;
 	this.eventSendVal = 'formSendVal';
 	this.eventSelectAll = 'formSelectAll';
+	this.eventRemove = 'formRemove';
 	this.init();
 }
 

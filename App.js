@@ -20,13 +20,18 @@ App.prototype = {
 		this.subscribe(this.form.eventSelectAll, this.list.selectUnselectAll, this.list);
 		this.subscribe(this.appEvent, this.list.render, this.list);
 		this.subscribe(this.list.eventGetLiForDel, this.form.checkDelBtn, this.form);
+		this.subscribe(this.form.eventRemove, this.list.remove, this.list);
 		this.notify(this.appEvent, data);
 	},
 
 	delegationEvent: function (e) {
 		var target = e.target;
 
-		if (target.classList.contains('select-btn')) {
+		if (target.classList.contains('del-btn')) {
+			if (!confirm('Selected elements will be deleted. Are you sure?')) return;
+			this.notify(this.form.eventRemove, this.list.getLiForDel())
+
+		} else if (target.classList.contains('select-btn')) {
 
 			this.notify(this.form.eventSelectAll)
 

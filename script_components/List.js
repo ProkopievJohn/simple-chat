@@ -17,8 +17,10 @@ List.prototype = {
 	},
 
 	remove: function (element) {
-		var el = typeof element == 'string' ? document.querySelector('#' + element) : element;
-		el.parentNode.removeChild(el);
+		for (var i = 0; i < element.length; i++) {
+			var el = typeof element[i] == 'string' ? document.querySelector('#' + element[i]) : element[i];
+			el.parentNode.removeChild(el);
+		}
 	},
 
 	getLiForDel: function () {

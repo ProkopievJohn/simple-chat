@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 gulp.task('js', function () {
 	return gulp.src(filesJS)
 		.pipe(concat('script.min.js'))
-		// .pipe(uglify())
+		.pipe(uglify())
 		.pipe(gulp.dest('./'));
 });
 

@@ -1,3 +1,31 @@
+function App () {
+	this.form = new Form(document.querySelector('.form-musician'));
+	this.list = new List(document.querySelector('.musicians'));
+	this.events = new EventEmitter();
+	this.init();
+}
+
+App.prototype = {
+	init: function () {
+		this.form.on('enter-value', 		this.list.add.bind(this.list));
+		this.form.on('select-unselect-all', this.list.selectUnselectAll.bind(this.list));
+		this.form.on('remove-lis', 			this.list.remove.bind(this.list));
+
+		this.list.on('check-for-del', 		this.form.checkDelBtn.bind(this.form));
+		this.list.render(data);
+	}
+}
+
+window.addEventListener('DOMContentLoaded', function(){
+	new App();
+});
+
+var data = ['John Lennon', 'Gary Moore', 'Steve Vai', 'Ronnie James Dio'];
+
+
+
+
+
 // function App() {
 // 	this.observers =[];
 // 	this.form = new Form(document.querySelector('.form-musician'));
@@ -114,55 +142,4 @@
 //   list.on('selection-change', form.changeButtonState.bind(form));
 //  }
 // }
-
-function App () {
-	this.form = new Form(document.querySelector('.form-musician'));
-	this.list = new List(document.querySelector('.musicians'));
-	// this.events = new EventEmitter();
-	this.init();
-}
-
-App.prototype = {
-	init: function () {
-		// var form = new Form(document.querySelector('.form-musician'));
-		// var list = new List(document.querySelector('.musicians'));
-		// console.log(form);
-		this.form.on('enter-value', this.list.add.bind(this.list));
-		// form.on('enter-value', list.add);
-	},
-
-	// on: function (event, listener) {
-	// 	this.events.on(event, listener);
-	// },
-	
-	// emit: function (event, parameters) {
-	// 	this.events.emit(event, parameters);
-	// }
-}
-
-window.addEventListener('DOMContentLoaded', function(){
-	new App();
-});
-
-var data = ['John Lennon', 'Gary Moore', 'Steve Vai', 'Ronnie James Dio'];
-
-
-
-
-
-// function List() {
-//  this.events = new EventEmitter();
-// }
-
-
-// List.prototype.setSelected = function(item) {
-//  this.selection.push(item);
-//  this.events.emit('selection-change', [this.selection]);
-// }
-
-// List.prototype.on = function(event, handler) {
-//  this.events.on(event, handler)
-// }
-
-
 

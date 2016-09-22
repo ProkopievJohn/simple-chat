@@ -1,39 +1,20 @@
-// App = {
-//  init: function() {
-//   var list = new List();
-//   var form = new Form();
-//   list.on('selection-change', form.changeButtonState.bind(form));
-//  }
-// }
-
-// function List() {
-//  this.events = new EventEmitter();
-// }
-
-
-// List.prototype.setSelected = function(item) {
-//  this.selection.push(item);
-//  this.events.emit('selection-change', [this.selection]);
-// }
-
-// List.prototype.on = function(event, handler) {
-//  this.events.on(event, handler)
-// }
-
-
-
-
 function Form(el) {
 	if (!el) return;
 	this.events = new EventEmitter();
 	this.el = el;
+	this.btnAdd = this.el.querySelector('.add-btn');
+	this.btnDel = this.el.querySelector('.del-btn');
+	this.btnSelect = this.el.querySelector('.select-btn');
+	this.input = this.el.querySelector('.input');
+	this.section = [];
 	this.init();
 }
 
 
 Form.prototype = {
 	init: function() {
-		console.log('form init');
+		this.el.addEventListener('click', this.delegationEventClick.bind(this));
+		this.el.addEventListener('keyup', this.delegationEventKeyup.bind(this));
 	},
 
 	on: function (event, listener) {
@@ -44,59 +25,52 @@ Form.prototype = {
 		this.events.emit(event, parameters);
 	},
 
-	setSelected: function (items) {
-		this.section.push(item);
-		this.emit('enter-value', [this.section]);
+	clearInputValue: function () {
+		this.input.value = '';
+	},
+
+	delegationEventClick: function (e) {
+		var target = e.target;
+
+		if (target === this.btnAdd) {
+			this.enterVal(this.input.value);
+			this.clearInputValue();
+		}
+
+		if (target === this.btnSelect) {
+			this.selectUnselectAll();
+		}
+
+		if (target === this.btnDel) {
+			this.remove();
+		}
+
+		this.input.value === '' ? this.btnAdd.setAttribute('disabled', 'disabled') : this.btnAdd.removeAttribute('disabled');
+	},
+
+	delegationEventKeyup: function (e) {
+		if (e.keyCode === 13 && this.input.value !== '') {
+			this.enterVal(this.input.value);
+			this.clearInputValue();
+		}
+
+		this.input.value === '' ? this.btnAdd.setAttribute('disabled', 'disabled') : this.btnAdd.removeAttribute('disabled');
+	},
+
+	enterVal: function (text) {
+		this.emit('enter-value', text);
+	},
+
+	selectUnselectAll: function () {
+		this.emit('select-unselect-all');
+	},
+
+	remove: function () {
+		this.emit('remove-lis');
+	},
+
+	checkDelBtn: function (check) {
+		console.log(check[0]);
+		check[0] ? this.btnDel.removeAttribute('disabled') : this.btnDel.setAttribute('disabled', 'disabled');
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function Form(el) {
-// 	if (!el) return;
-// 	this.el = el;
-// 	this.eventSendVal = 'formSendVal';
-// 	this.eventSelectAll = 'formSelectAll';
-// 	this.eventRemove = 'formRemove';
-// 	this.init();
-// }
-
-// Form.prototype = {
-// 	init: function () {
-// 		this.el.addEventListener('keyup', this.checkAddBtn.bind(this));
-// 	},
-
-// 	checkAddBtn: function () {
-// 		var btn = this.el.querySelector('.add-btn');
-// 		this.checkValue() ? btn.removeAttribute('disabled') : btn.setAttribute('disabled', 'disabled');
-// 	},
-
-// 	checkDelBtn: function (check) {
-// 		var btn = this.el.querySelector('.del-btn');
-// 		check ? btn.removeAttribute('disabled') : btn.setAttribute('disabled', 'disabled');
-// 	},
-
-// 	getValue: function () {
-// 		return this.el.querySelector('.input').value;
-// 	},
-
-// 	noValue: function () {
-// 		this.el.querySelector('.input').value = '';
-// 		this.checkAddBtn();
-// 	},
-
-// 	checkValue: function () {
-// 		return this.el.querySelector('.input').value !== '' ? true : false;
-// 	}
-// }
-

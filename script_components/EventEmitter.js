@@ -10,13 +10,14 @@ EventEmitter.prototype.on = function(event, listener) {
 	this.events[event].push(listener);
 }
 
-EventEmitter.prototype.emit = function (event, parameters) {
+EventEmitter.prototype.emit = function (event) {
 	if (typeof this.events[event] !== 'object') return;
 
+	var arg = [].slice.call(arguments, 1);
 	var listeners = this.events[event].slice(),
 		length = listeners.length;
-
+// console.log(arg);
 	for(var i = 0; i < length; i++) {
-		listeners[i].call(this, parameters)
+		listeners[i].call(this, arg)
 	}
 };

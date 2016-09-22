@@ -2,12 +2,17 @@ function List(el) {
 	if (!el) return;
 	this.events = new EventEmitter();
 	this.el = el;
+	this.ctrl = false;
+	this.shif = false;
+	this.shiftFromTo = [];
 	this.init();
 }
 
 List.prototype = {
 	init: function() {
-		this.el.addEventListener('click', this.delegationEvent.bind(this));
+		this.el.addEventListener('click', this.delegationEventClick.bind(this));
+		document.addEventListener('keyup', this.delegationEventKeyup.bind(this));
+		document.addEventListener('keydown', this.delegationEventKeydown.bind(this));
 	},
 
 	on: function (event, listener) {
@@ -18,17 +23,49 @@ List.prototype = {
 		this.events.emit(event, parameters);
 	},
 
-	delegationEvent: function (e) {
+	delegationEventClick: function (e) {
 		var target = e.target;
 
-		if (target.tagName === 'LI') {
-			this.selectOneLi(target)
+		if (target.tagName === 'LI' && this.ctrl) {
+			this.selectEl(target);
+			this.shiftFromTo[0] = Array.prototype.indexOf.call(target.parentNode.children, target);
+			
+		} else if (target.tagName === 'LI' && this.shif) {
+			this.shiftFromTo[1] = Array.prototype.indexOf.call(target.parentNode.children, target);
+
+			var firstIndex = this.shiftFromTo[0];
+			var lastIndex = this.shiftFromTo[1];
+			
+			firstIndex <= lastIndex 
+				? this.selectElsFromTo(firstIndex, lastIndex) 
+				: this.selectElsFromTo(lastIndex, firstIndex);
+			
+		} else if (target.tagName === 'LI') {
+			this.selectOneEl(target)
+			this.shiftFromTo[0] = Array.prototype.indexOf.call(target.parentNode.children, target);
 		}
 
-		this.checkForDel(this.getLiForDel().length > 0);
+		this.checkForDel(this.getElForDel().length > 0);
+	},
+
+	delegationEventKeydown: function (e) {
+		if (e.keyCode === 17) {
+			this.ctrl = true;
+		} else if (e.keyCode === 16) {
+			this.shif = true;
+		}
+	},
+
+	delegationEventKeyup: function (e) {
+		if (e.keyCode === 17) {
+			this.ctrl = false;
+		} else if (e.keyCode === 16) {
+			this.shif = false;
+		}
 	},
 
 	add: function (text) {
+		this.checkForDel(this.getElForDel().length !== 0);
 		this.el.insertAdjacentHTML('beforeend', '<li>' + text + '</li>');
 	},
 
@@ -38,102 +75,63 @@ List.prototype = {
 		}
 	},
 
-	getLiForDel: function () {
+	getElForDel: function () {
 		return this.el.querySelectorAll('.for-del');
 	},
 
-	getAllLi: function () {
+	getAllEl: function () {
 		return this.el.querySelectorAll('li');
 	},
 
 	selectAll: function () {
-		var allLi = this.getAllLi();
-		for (var i = 0; i < allLi.length; i++) {
-			allLi[i].classList.add('for-del')
+		var allEl = this.getAllEl();
+		for (var i = 0; i < allEl.length; i++) {
+			allEl[i].classList.add('for-del')
 		}
 	},
 
 	unSelectAll: function () {
-		var allLi = this.getAllLi();
-		for (var i = 0; i < allLi.length; i++) {
-			allLi[i].classList.remove('for-del');
+		var allEl = this.getAllEl();
+		for (var i = 0; i < allEl.length; i++) {
+			allEl[i].classList.remove('for-del');
 		}
 	},
 
 	remove: function () {
-		elements = this.getLiForDel();
+		elements = this.getElForDel();
 		for (var i = 0; i < elements.length; i++) {
 			elements[i].parentNode.removeChild(elements[i]);
 		}
 	},
 
 	selectUnselectAll: function () {
-		this.getAllLi().length !== this.getLiForDel().length ? this.selectAll() : this.unSelectAll();
-		this.checkForDel(this.getAllLi().length === this.getLiForDel().length);
+		this.getAllEl().length !== this.getElForDel().length ? this.selectAll() : this.unSelectAll();
+		this.checkForDel(this.getElForDel().length !== 0);
 	},
 
-	selectLi: function (element) {
+	selectEl: function (element) {
 		var el = typeof element == 'string' ? document.querySelector('#' + element) : element;
 		el.classList.toggle('for-del');
 	},
 
-	selectOneLi: function (element) {
+	selectOneEl: function (element) {
 		var el = typeof element == 'string' ? document.querySelector('#' + element) : element;
 		this.unSelectAll();
-		this.selectLi(el);
+		this.selectEl(el);
+	},
+
+	selectElsFromTo: function (first, last) {
+		if (first == undefined) return;
+		if (last == undefined) last = first;
+		var allEl = this.getAllEl();
+		this.unSelectAll();
+		
+		for (var i = first; i <= last; i++) {
+			allEl[i].classList.add('for-del');
+		}
 	},
 
 	checkForDel: function (check) {
 		this.emit('check-for-del', check);
 	}
 }
-
-
-
-
-
-
-
-
-// function List(el) {
-// 	if (!el) return;
-// 	this.el = el;
-// 	this.eventGetLiForDel = 'listGetLiForDel'
-// }
-
-// List.prototype = {
-
-
-// 	checkLi: function () {
-// 		return this.el.querySelectorAll('.for-del').length !== 0 ? true : false;
-// 	},
-
-// 	selectUnselectAll: function () {
-// 		this.getAllLi().length !== this.getLiForDel().length ? this.selectAll() : this.unSelectAll();
-// 	},
-
-// 	selectAll: function () {
-// 		var allLi = this.getAllLi();
-// 		for (var i = 0; i < allLi.length; i++) {
-// 			allLi[i].classList.add('for-del')
-// 		}
-// 	},
-
-// 	unSelectAll: function () {
-// 		var allLi = this.getAllLi();
-// 		for (var i = 0; i < allLi.length; i++) {
-// 			allLi[i].classList.remove('for-del');
-// 		}
-// 	},
-
-
-// 	selectList: function (firstEl, lastEl) {
-// 		this.unSelectAll();
-// 		var lis = this.getAllLi();
-// 		for (var i = firstEl; i <= lastEl; i++) {
-// 			lis[i].classList.add('for-del');
-// 		}
-// 	}
-// }
-
-

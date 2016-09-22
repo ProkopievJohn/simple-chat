@@ -6,7 +6,6 @@ function Form(el) {
 	this.btnDel = this.el.querySelector('.del-btn');
 	this.btnSelect = this.el.querySelector('.select-btn');
 	this.input = this.el.querySelector('.input');
-	this.section = [];
 	this.init();
 }
 
@@ -42,10 +41,11 @@ Form.prototype = {
 		}
 
 		if (target === this.btnDel) {
+			if (!confirm('Selected elements will be deleted. Are you sure?')) return;
 			this.remove();
 		}
 
-		this.input.value === '' ? this.btnAdd.setAttribute('disabled', 'disabled') : this.btnAdd.removeAttribute('disabled');
+		this.checkAddBtn();
 	},
 
 	delegationEventKeyup: function (e) {
@@ -54,7 +54,7 @@ Form.prototype = {
 			this.clearInputValue();
 		}
 
-		this.input.value === '' ? this.btnAdd.setAttribute('disabled', 'disabled') : this.btnAdd.removeAttribute('disabled');
+		this.checkAddBtn();
 	},
 
 	enterVal: function (text) {
@@ -66,11 +66,14 @@ Form.prototype = {
 	},
 
 	remove: function () {
-		this.emit('remove-lis');
+		this.emit('remove-elements');
 	},
 
 	checkDelBtn: function (check) {
-		console.log(check[0]);
-		check[0] ? this.btnDel.removeAttribute('disabled') : this.btnDel.setAttribute('disabled', 'disabled');
+		check ? this.btnDel.removeAttribute('disabled') : this.btnDel.setAttribute('disabled', 'disabled');
+	},
+
+	checkAddBtn: function () {
+		this.input.value === '' ? this.btnAdd.setAttribute('disabled', 'disabled') : this.btnAdd.removeAttribute('disabled');
 	}
 }

@@ -75,5 +75,9 @@ Form.prototype = {
 
 	checkAddBtn: function () {
 		this.input.value === '' ? this.btnAdd.setAttribute('disabled', 'disabled') : this.btnAdd.removeAttribute('disabled');
+	},
+
+	checkSelectBtn: function (check) {
+		check ? this.btnSelect.removeAttribute('disabled') : this.btnSelect.setAttribute('disabled', 'disabled');
 	}
 }

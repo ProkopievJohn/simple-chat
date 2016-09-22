@@ -12,6 +12,7 @@ App.prototype = {
 		this.form.on('remove-elements', 	this.list.remove.bind(this.list));
 
 		this.list.on('check-for-del', 		this.form.checkDelBtn.bind(this.form));
+		this.list.on('check-for-select', 		this.form.checkSelectBtn.bind(this.form));
 		this.list.render(data);
 	}
 }

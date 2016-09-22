@@ -67,6 +67,7 @@ List.prototype = {
 	add: function (text) {
 		this.checkForDel(this.getElForDel().length !== 0);
 		this.el.insertAdjacentHTML('beforeend', '<li>' + text + '</li>');
+		this.checkForSelect(this.getAllEl().length !== 0);
 	},
 
 	render: function (items) {
@@ -103,6 +104,7 @@ List.prototype = {
 			elements[i].parentNode.removeChild(elements[i]);
 		}
 		this.checkForDel(this.getElForDel().length !== 0);
+		this.checkForSelect(this.getAllEl().length !== 0);
 	},
 
 	selectUnselectAll: function () {
@@ -134,5 +136,9 @@ List.prototype = {
 
 	checkForDel: function (check) {
 		this.emit('check-for-del', check);
+	},
+
+	checkForSelect: function (check) {
+		this.emit('check-for-select', check);
 	}
 }

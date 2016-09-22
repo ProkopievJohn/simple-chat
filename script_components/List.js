@@ -102,6 +102,7 @@ List.prototype = {
 		for (var i = 0; i < elements.length; i++) {
 			elements[i].parentNode.removeChild(elements[i]);
 		}
+		this.checkForDel(this.getElForDel().length !== 0);
 	},
 
 	selectUnselectAll: function () {
